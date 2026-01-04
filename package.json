@@ -1,0 +1,46 @@
+{
+  "name": "@tac0de/debugging-mcp",
+  "version": "0.1.0",
+  "description": "A strict debugging protocol MCP server for AI coding agents",
+  "license": "MIT",
+  "private": false,
+  "type": "module",
+  "bin": {
+    "debugging-mcp": "src/server.js"
+  },
+  "main": "src/server.js",
+  "exports": {
+    ".": "./src/server.js"
+  },
+  "keywords": [
+    "mcp",
+    "debugging",
+    "ai-agent",
+    "protocol",
+    "software-debugging"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tac0de/debugging-mcp"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "zod": "^3.24.1"
+  },
+  "scripts": {
+    "start": "node src/server.js"
+  },
+  "files": [
+    "src",
+    "rules",
+    "output",
+    "examples",
+    "README.md"
+  ]
+}
