@@ -1,4 +1,15 @@
-export const REQUIRED_SECTIONS = [
+export type RequiredSection = {
+  id: string;
+  label: string;
+  pattern: RegExp;
+};
+
+export type BugReportValidationResult = {
+  valid: boolean;
+  missing: string[];
+};
+
+export const REQUIRED_SECTIONS: RequiredSection[] = [
   {
     id: "reproduction",
     label: "## Reproduction",
@@ -52,7 +63,7 @@ export const REQUIRED_SECTIONS = [
   },
 ];
 
-export function validateBugReport(report) {
+export function validateBugReport(report: string): BugReportValidationResult {
   const missing = REQUIRED_SECTIONS.filter(
     (section) => !section.pattern.test(report)
   ).map((section) => section.label);

@@ -11,7 +11,13 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const repoRoot = path.resolve(__dirname, "..");
 
-const DOCUMENTS = {
+type DocumentDescriptor = {
+  title: string;
+  primaryPath: string;
+  fallbackPath?: string;
+};
+
+const DOCUMENTS: Record<string, DocumentDescriptor> = {
   scope: {
     title: "Scope",
     primaryPath: "rules/scope.md",
@@ -48,7 +54,7 @@ const WEB_DEBUGGING_CHECKLIST = [
   "Collect metrics/traces if available to pinpoint latency or error spikes.",
 ].join("\n");
 
-async function fileExists(filePath) {
+async function fileExists(filePath: string): Promise<boolean> {
   try {
     await fs.access(filePath);
     return true;
@@ -57,7 +63,7 @@ async function fileExists(filePath) {
   }
 }
 
-async function resolveDocumentPath(doc) {
+async function resolveDocumentPath(doc: DocumentDescriptor): Promise<string> {
   const primary = path.join(repoRoot, doc.primaryPath);
   if (await fileExists(primary)) {
     return primary;
@@ -71,7 +77,7 @@ async function resolveDocumentPath(doc) {
   throw new Error(`Document not found: ${doc.primaryPath}`);
 }
 
-async function loadDocument(docKey) {
+async function loadDocument(docKey: string): Promise<string> {
   const doc = DOCUMENTS[docKey];
   if (!doc) {
     throw new Error(`Unknown document: ${docKey}`);
@@ -125,13 +131,13 @@ server.registerTool(
     title: "Debugging MCP Document",
     description: "Fetch a single Debugging MCP document by key.",
     inputSchema: {
-      document: z.enum(Object.keys(DOCUMENTS)),
+      document: z.enum(Object.keys(DOCUMENTS) as [string, ...string[]]),
     },
     outputSchema: {
       document: z.string(),
     },
   },
-  async ({ document }) => {
+  async ({ document }: { document: string }) => {
     const text = await loadDocument(document);
     return {
       content: [
@@ -194,7 +200,7 @@ server.registerTool(
       missing: z.array(z.string()),
     },
   },
-  async ({ report }) => {
+  async ({ report }: { report: string }) => {
     const { valid, missing } = validateBugReport(report);
     return {
       content: [

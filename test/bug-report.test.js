@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { validateBugReport } from "../src/bug-report.js";
+import { validateBugReport } from "../dist/bug-report.js";
 
 test("validateBugReport flags missing sections", () => {
   const partialReport = `

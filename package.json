@@ -1,16 +1,20 @@
 {
   "name": "@tac0de/debugging-mcp",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "A strict debugging protocol MCP server for AI coding agents",
   "license": "MIT",
   "private": false,
   "type": "module",
   "bin": {
-    "debugging-mcp": "src/server.js"
+    "debugging-mcp": "dist/server.js"
   },
-  "main": "src/server.js",
+  "main": "./dist/server.js",
+  "types": "./dist/server.d.ts",
   "exports": {
-    ".": "./src/server.js"
+    ".": {
+      "types": "./dist/server.d.ts",
+      "default": "./dist/server.js"
+    }
   },
   "keywords": [
     "mcp",
@@ -33,11 +37,18 @@
     "@modelcontextprotocol/sdk": "^1.0.0",
     "zod": "^3.24.1"
   },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "typescript": "^5.4.5"
+  },
   "scripts": {
-    "start": "node src/server.js",
-    "test": "node --test"
+    "build": "tsc -p tsconfig.json",
+    "prepublishOnly": "npm run build",
+    "start": "npm run build && node dist/server.js",
+    "test": "npm run build && node --test"
   },
   "files": [
+    "dist",
     "src",
     "rules",
     "output",
